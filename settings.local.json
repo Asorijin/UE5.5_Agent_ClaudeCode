@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//d H:/UE/**)",
+      "Bash(\"C:/Program Files/Epic Games/UE_5.5/Engine/Build/BatchFiles/Build.bat\" forlearn Win64 Development -Project=\"H:/UE/forlearn/forlearn.uproject\" -WaitMutex -FromMsBuild)",
+      "Bash(\"/c/Program Files/Epic Games/UE_5.5/Engine/Build/BatchFiles/Build.bat\" forlearn Win64 Development -Project=\"H:/UE/forlearn/forlearn.uproject\" -WaitMutex -FromMsBuild)",
+      "Read(//c/Program Files/**)",
+      "Bash(cmd.exe /c 'dir C:\\\\Program Files\\\\Epic Games')",
+      "Bash(cmd.exe /c \"dir \\\\\"C:\\\\Program Files\\\\Epic Games\\\\\" 2>&1\")",
+      "Bash(cmd.exe /c \"dir C:\\\\\\\\ 2>&1 && dir \\\\\"C:\\\\\\\\Program Files\\\\\\\\Epic Games\\\\\\\\\\\\\" 2>&1\")",
+      "Bash(cmd.exe /c dir \"C:\\\\Program Files\\\\Epic Games\\\\\" && echo \"done\")",
+      "Bash(cmd.exe /c 'dir \"C:\\\\Program Files\\\\Epic Games\"')",
+      "Bash(\"D:/UE_5.5/Engine/Build/BatchFiles/Build.bat\" forlearn:*)",
+      "Bash(\"C:/Program Files/Epic Games/UE_5.5/Engine/Build/BatchFiles/Build.bat\" forlearn Win64 Development -Project=\"H:/UE/forlearn/forlearn.uproject\" -WaitMutex)",
+      "Bash(cmd.exe /c \"H:\\\\UE\\\\forlearn\\\\.claude\\\\script\\\\quickComplie.bat\")",
+      "Bash(\"H:/UE/forlearn/.claude/script/quickComplie.bat\" 2>&1)"
+    ]
+  }
+}
