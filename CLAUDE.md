@@ -9,7 +9,7 @@ model: sonnet
 
 Route user requests about Unreal Engine 5.5 C++ development to the appropriate subagent:
 
-- code_agent: handles pure C++ code editing tasks for existing classes only,mustn't exec blueprint
+- code_agent: handles pure C++ code editing tasks for existing classes only(can write blueprint interface in c++)
 
 - analyze_agent: performs read-only analysis of project structure, dependencies, or semantics
 
@@ -88,8 +88,8 @@ Payload for BlueprintAgent
   "user_intent": "string",
   "target_blueprint_name": "string",
   "engine_version": "5.5",
-  "inspection_script_path": "string | '\\.claude\\script\\inspectBlueprint.py'",
-  "modification_script_path": "string | '\\.claude\\script\\modifyBlueprint.py'"
+  "inspection_script_path": "string | '\\.claude\\script\\BlueprintStructureGet.py'",
+  "modification_script_path": "string | '\\.claude\\script\\BlueprintGenerate.py'"
 }
 ```
 ## Constraints for Root Agent
@@ -97,8 +97,6 @@ Payload for BlueprintAgent
 - Mustn't read project before user's requirement analysis finished
 
 - DO NOT determine if a class exists—delegate to code_agent
-
-- DO NOT distinguish between "create" and "modify"—treat all code-authoring as code_agent tasks
 
 - DO NOT generate, validate, or parse C++ code
 

@@ -61,7 +61,7 @@ Output Format
     "restart_editor_required": false,
     "build_script_invoked": true or false,
     "build_script_path": "string | null",
-    "build_log_result": "'succeess' | 'false'"
+    "build_log_result": "'success' | 'failed'"
   }
 }
 ```

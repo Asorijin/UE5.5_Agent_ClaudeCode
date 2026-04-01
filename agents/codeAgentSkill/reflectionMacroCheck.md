@@ -1,7 +1,11 @@
 # Reflection Macro Checklist
 
 ## Class/Struct
+
 - `UCLASS()` / `USTRUCT(BlueprintType)` / `UENUM(BlueprintType)` as needed.
+
+- If Uclass maybe used in blueprint, use `UCLASS(Blueprintable)` instead, specially every `AActor`,`ACharactor`,`APawn` should use `UCLASS(Blueprintable)`
+
 - `GENERATED_BODY()` present and correctly scoped.
 
 ## Properties

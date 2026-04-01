@@ -1,6 +1,6 @@
 # Claude Code for Unreal Engine 5.5
 
-本项目为 Unreal Engine 5.5 开发配置了专用的 Claude Code 智能体系统。
+本项目为 Unreal Engine 5.5 开发配置了专用的 Claude Code 智能体系统，供了解UE引擎的开发人员使用，构建了简单的requirement-coding-rewiew-build-summary workflow。
 
 ## 智能体架构
 
@@ -11,6 +11,7 @@
 - **codeAgent** - C++ 代码编辑任务
 - **analyzeAgent** - 只读分析任务  
 - **blueprintAgent** - 蓝图资产操作任务
+- **reviewAgent** - 代码审查任务
 
 ### 1. codeAgent
 
@@ -95,4 +96,6 @@
 
 *本配置遵循最小化原则，仅在必要时调用智能体，避免过度自动化。*
 
-> TODO : 配置代码审查AGENT自动化接入需要编程的环节，允许BlueprintAgent自动化编写更改蓝图结构的python脚本
+> TODO : 为编写蓝图脚本的subskill提供可查询的向量数据库，保证调用接口的正确性和接口相关开发效率；为codeAgent接入reviewAgent代码审查功能
+
+> FUTURE : 实现在单个任务中的逐步骤记录，使思考连和调用链可追踪，对于大规模/长流程任务，实现原子级别的中断可恢复

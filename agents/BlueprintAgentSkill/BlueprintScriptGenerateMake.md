@@ -1,69 +1,149 @@
-This subskill governs the dynamic configuration and execution of script\BlueprintGet.bat to inspect one or more Unreal Engine 5.5 Blueprint assets.
+This document defines the internal procedure that the BlueprintAgent must follow during Step 4 (Apply Changes) of its workflow. It is not a standalone agent—it is a detailed action plan executed within the BlueprintAgent’s own logic.
 
-## Objective
-Generate accurate structural metadata for each target Blueprint by:
+Step 4.1: Analyze Operation Intent
 
-1. Modifying BlueprintGet.bat to set the correct map context and Blueprint asset path
+Based on prior steps, determine which of the following applies:
 
-2. Executing the batch script to run the inspection Python tool
+A. Modify existing Blueprint
+→ blueprint_info.found_in_content_dir == true
+→ Use inspection_summary to understand current structure
+→ Plan changes (e.g., “add float variable JumpPower”, “connect EventBeginPlay to PrintString”)
 
-3. Repeating the process for every requested Blueprint
+B. Create new Blueprint from C++ class
+→ blueprint_info.found_in_content_dir == false
+→ User intent must imply creation (e.g., “make BP based on AMyActor”)
+→ Extract C++ class name from user_intent (e.g., AMyActor, MyCharacter)
+→ Target path inferred from naming convention (e.g., /Game/Blueprints/BP_MyActor.BP_MyActor)
 
-Input Requirements
+> If case B is detected but no valid C++ class can be extracted, set status = "error" and halt.
 
-- List of target Blueprints, each specified as a full asset path (e.g., /Game/Characters/BP_Player.BP_Player)
+Step 4.2: Dynamically Generate script\BlueprintGenerate.py
 
-- desired map name for editor context (reject requirement if unspecified)
+every time call this workflow, write(if really need write a new one) a new, self-contained Python script to script\BlueprintGenerate.py with the following properties:
 
-## Procedure
+No external parameters: Since BlueprintGenerate.bat does not pass arguments, all data must be hard-coded into the .py file:
 
-> every script must exist, if not, search them in \\.claude\script again
+TARGET_BP_PATH: Full asset path (e.g., /Game/Characters/BP_Player.BP_Player)
 
-For each Blueprint in the input list:
+PARENT_CPP_CLASS_NAME: Only if creating (e.g., "MyCharacter")
 
-1. Edit script\BlueprintGet.bat
+MAP_CONTEXT: Typically "MyDefaultMap" (used to load editor world)
 
-Locate the line:
+Specific change instructions (e.g., variable names, default values, node connections)
 
-```bat
-set SCRIPT="H:\UE\forlearn\.claude\script\BlueprintStructureGet.py MyDefaultMap /Game/Characters/BP_Player.BP_Player"
+Use only safe Unreal Editor Python API (unreal module):
+
+For modification: unreal.load_object(None, path)
+
+For creation: unreal.EditorAssetLibrary.create_asset(...) with BlueprintFactory
+
+Always call unreal.BlueprintEditorLibrary.compile_blueprint(bp) at the end
+
+Minimal logging:
+```python
+unreal.log("BlueprintGenerate: Starting...")
+# ... work ...
+unreal.log("BlueprintGenerate: Success.")
+# OR
+unreal.log_error("Failed to find parent class.")
 ```
-Replace it with:
+Template logic:
+```python
+import unreal
 
-```bat
-set SCRIPT="H:\UE\forlearn\.claude\script\BlueprintStructureGet.py <MAP_NAME> <FULL_BLUEPRINT_PATH>"
+TARGET_BP_PATH = "/Game/Blueprints/BP_Door.BP_Door"
+PARENT_CPP_CLASS_NAME = "ADoorBase"   # None if modifying existing
+MAP_CONTEXT = "MyDefaultMap"
+
+unreal.log("BlueprintGenerate: Initializing...")
+
+if unreal.EditorAssetLibrary.does_asset_exist(TARGET_BP_PATH):
+    bp = unreal.load_object(None, TARGET_BP_PATH)
+    # Apply modifications per user request
+else:
+    parent_class = unreal.find_class(PARENT_CPP_CLASS_NAME)
+    if not parent_class:
+        unreal.log_error(f"C++ class {PARENT_CPP_CLASS_NAME} not found!")
+        exit(1)
+    factory = unreal.BlueprintFactory()
+    factory.parent_class = parent_class
+    bp = unreal.EditorAssetLibrary.create_asset(
+        asset_name="BP_Door",
+        package_path="/Game/Blueprints",
+        asset_class=unreal.Blueprint,
+        factory=factory
+    )
+    # Optional: add initial nodes/variables
+# ← Insert user-requested logic here (generated dynamically)
+unreal.BlueprintEditorLibrary.compile_blueprint(bp)
+unreal.log("BlueprintGenerate: Completed.")
 ```
 
-Attention:Perhaps this bat file had changed by forward operation, so the content in file maybe look like replaced, just check if content match your need, if not, change it as you need
+If additional functionality is needed or certain features are unnecessary, they can be added or removed according to actual requirements.
 
-Where:
+The generated script must be deterministic, side-effect aware, and safe to run.
 
-<MAP_NAME> is either the user-provided map name or MyDefaultMap
+Step 4.3: Request Code Review from reviewAgent
 
-<FULL_BLUEPRINT_PATH> is the current Blueprint’s full asset path (e.g., /Game/Blueprints/Door_BP.Door_BP)
+Before executing, pause the BlueprintAgent workflow and BlueprintAgent should send a structured request to the main CLAUDE process to invoke reviewAgent:
 
-2. Execute the batch script
-Run:
+```json
+{
+  "action": "request_review",
+  "from_agent": "BlueprintAgent",
+  "review_target": "BlueprintGenerate.py",
+  "context": {
+    "user_original_request": "<user_intent>",
+    "operation_type": "modify_existing | create_from_cpp",
+    "target_asset_path": "/Game/...",
+    "cpp_parent_class": "MyCharacter (if applicable)"
+  },
+  "code_content": "<full content of script/BlueprintGenerate.py>",
+  "expected_behavior": "Describe what the script should do in plain English"
+}
+```
+Do not proceed until the main system returns review_result: approved
 
+If review_result: rejected, return status: "error" with reviewer feedback
+
+Step 4.4: Execute & Report (No Extra Confirmation)
+
+Once review is approved:
+
+1. Notify user:
+
+Script reviewed and approved. Executing blueprint operation automatically...
+
+2. Run:
 ```cmd
-script\BlueprintGet.bat
+script\BlueprintGenerate.bat
 ```
 
-Capture its output (typically written to a .json or .txt file, or printed to stdout).
+3. Capture output and exit code
 
-3. Record the result
+4. On success:
 
-Associate the inspection output with the current Blueprint path for later reporting.
+Set status: "success" (or "created_new" if newly created)
 
-4. Proceed to next Blueprint (if any)
+Return message:
 
-## Constraints
-- Never assume default paths—always use the Blueprint path provided
+Blueprint updated successfully at /Game/.... Ready to use in editor.
 
-- Do not modify any other part of BlueprintGet.bat except the set SCRIPT=... line
+5. on failure:
 
-- If multiple Blueprints are given, process them sequentially, not in parallel
+Parse stderr/stdout for unreal.log_error(...) lines
 
-- The Python script BlueprintStructureGet.py must accept exactly two arguments: <MapName> and <BlueprintPath>
+Return detailed error, e.g.:
 
-- This subskill only handles script configuration and execution—it does not interpret the inspection results
+Execution failed:
+C++ class 'MyCharacter' not registered — ensure it's compiled and visible to editor.
+Set status: "error"
+Important: Because the code has passed formal review, no additional user confirmation is required before execution.
+
+## Constraints (Enforced by BlueprintAgent)
+
+- Never execute BlueprintGenerate.py without prior review
+- Never guess C++ class names—must be extractable from user intent
+- All asset paths must reside under /Game/ (i.e., in Content/)
+- Generated script must compile the Blueprint before exiting
+- Logging must be minimal—only progress and errors

@@ -1,6 +1,6 @@
 ---
 name: reviewAgent
-description: "only used when other agents need use this agent,can't be called indenpently"
+description: "only used when CLAUDE wants to use this subagent through CLAUDE.md"
 tools: CronCreate, CronDelete, CronList, EnterWorktree, ExitWorktree, Glob, Grep, Read, RemoteTrigger, Skill, TaskCreate, TaskGet, TaskList, TaskUpdate, WebFetch, WebSearch, Edit, NotebookEdit, Write
 model: sonnet
 color: green
