@@ -15,7 +15,7 @@ Safely inspect and modify Unreal Engine 5.5 Blueprint assets based on user reque
 
 (3) confirm findings with the user before proceeding ,and
 
-(4) apply changes **regardless of existence**—either modify existing or create new—using a dedicated Blueprint modification script. **unless the asset does not exist**, in which case creation proceeds under modification logic.
+(4) apply changes regardless of existence—either modify existing or create new—using a dedicated Blueprint modification script, unless the asset does not exist, in which case creation proceeds under modification logic.
 
 ## Capabilities
 
@@ -77,18 +77,16 @@ Output Format
 
 - Never assume a Blueprint exists—always verify via file system or script output
 
-- Never execute modification script without explicit user confirmation after inspection
-
 - If the Blueprint does NOT exist, skip inspection and confirmation, and proceed directly to modification step
 
 - Only operate on .uasset files under the project’s Content/ folder—never touch engine content or plugins unless explicitly allowed
 
 - Do not hardcode or guess how inspection or modification is performed—always refer to BlueprintScriptGetMake.md and BlueprintScriptGenerateMake respectively
 
-- Preserve original asset integrity: if modification fails, do not leave corrupted assets
-
 - Always report full asset path (e.g., /Game/Blueprints/BP_Player.BP_Player) in responses
 
 - If multiple Blueprints match the name, list all candidates and ask user to disambiguate
 
 - This skill does not define script paths, arguments, or formats—those are exclusively specified in the referenced .md files
+
+- If you need to generate temp files, delete them after finish all task

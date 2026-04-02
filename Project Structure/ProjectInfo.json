@@ -1,0 +1,382 @@
+{
+  "project_name": "forlearn",
+  "engine_version": "5.5",
+  "analysis_date": "2026-04-02",
+  "project_type": "Third Person Shooter Learning Project",
+  "status": "success",
+  "message": "Project structure analysis completed successfully",
+  "modules": [
+    {
+      "module_name": "forlearn",
+      "path": "Source/forlearn",
+      "type": "Runtime",
+      "loading_phase": "Default",
+      "build_file": "Source/forlearn/forlearn.Build.cs",
+      "dependencies": [
+        "Core",
+        "CoreUObject",
+        "Engine",
+        "InputCore",
+        "EnhancedInput"
+      ],
+      "classes": [
+        {
+          "class_name": "AforlearnCharacter",
+          "header_path": "Source/forlearn/forlearnCharacter.h",
+          "cpp_path": "Source/forlearn/forlearnCharacter.cpp",
+          "base_class": "ACharacter",
+          "is_blueprintable": true,
+          "macros": ["UCLASS(config=Game)"],
+          "description": "Third person player character with weapon and aiming system",
+          "key_components": [
+            "USpringArmComponent* CameraBoom",
+            "UCameraComponent* FollowCamera",
+            "AGuns* HeldGun"
+          ],
+          "input_actions": [
+            "JumpAction",
+            "MoveAction",
+            "LookAction",
+            "ShootAction",
+            "AimAction"
+          ],
+          "blueprint_callable_methods": [
+            "TransferAmmoToGun",
+            "Shoot"
+          ],
+          "blueprint_properties": {
+            "read_write": [
+              "Health",
+              "BackpackBulletCounts",
+              "AimFOV",
+              "AimTransitionTime"
+            ],
+            "read_only": [
+              "HeldGun",
+              "DefaultFOV",
+              "bIsAiming"
+            ]
+          },
+          "key_methods": [
+            "PickUpGun",
+            "DropGun",
+            "Shoot",
+            "TransferAmmoToGun",
+            "StartAim",
+            "StopAim",
+            "Move",
+            "Look"
+          ]
+        },
+        {
+          "class_name": "AGuns",
+          "header_path": "Source/forlearn/Public/Guns.h",
+          "cpp_path": "Source/forlearn/Private/Guns.cpp",
+          "base_class": "APawn",
+          "is_blueprintable": true,
+          "macros": ["UCLASS()"],
+          "description": "Pickable gun system with multiple ammo types",
+          "key_components": [
+            "UStaticMeshComponent* GunMesh",
+            "USphereComponent* OverlapSphere"
+          ],
+          "blueprint_properties": {
+            "read_write": [
+              "AttackPower",
+              "SpeedModifier",
+              "BulletCounts"
+            ]
+          },
+          "key_methods": [
+            "OnOverlapBegin",
+            "PickedUp"
+          ]
+        },
+        {
+          "class_name": "AActorBase",
+          "header_path": "Source/forlearn/Public/ActorBase.h",
+          "cpp_path": "Source/forlearn/Private/ActorBase.cpp",
+          "base_class": "AActor",
+          "is_blueprintable": true,
+          "macros": ["UCLASS()"],
+          "description": "Base actor demonstrating UE property system, delegates, and timeline",
+          "key_components": [
+            "UStaticMeshComponent* StaticMeshComponent",
+            "UBoxComponent* BoxComponent",
+            "UTimelineComponent* Timeline"
+          ],
+          "delegates": [
+            "OneParamMultiDelegate (C++ multicast)",
+            "FDynDelegate (BlueprintAssignable)"
+          ],
+          "blueprint_properties": {
+            "read_write": [
+              "StaticMeshComponent",
+              "TimelineEvent",
+              "TimelineFloat"
+            ]
+          },
+          "key_methods": [
+            "OnOverlapBegin",
+            "OnHit",
+            "ChangeSize",
+            "MakeChange",
+            "TimelineStart",
+            "TimelineFinish",
+            "DelegateFunc",
+            "DelegateFunc1"
+          ]
+        },
+        {
+          "class_name": "AActorDerived",
+          "header_path": "Source/forlearn/Public/ActorDerived.h",
+          "cpp_path": "Source/forlearn/Private/ActorDerived.cpp",
+          "base_class": "AActorBase, TActorBaseCTRP<AActorDerived>",
+          "is_blueprintable": true,
+          "macros": ["UCLASS()"],
+          "description": "Derived actor demonstrating multiple inheritance with CRTP",
+          "key_methods": [
+            "ChangeSize"
+          ]
+        },
+        {
+          "class_name": "AActorDerivedOne",
+          "header_path": "Source/forlearn/Public/ActorDerivedOne.h",
+          "cpp_path": "Source/forlearn/Private/ActorDerivedOne.cpp",
+          "base_class": "AActorBase, TActorBaseCTRP<AActorDerivedOne>",
+          "is_blueprintable": true,
+          "macros": ["UCLASS()"],
+          "description": "Another derived actor demonstrating CRTP pattern",
+          "key_methods": [
+            "ChangeSize"
+          ]
+        },
+        {
+          "class_name": "TActorBaseCTRP",
+          "header_path": "Source/forlearn/Public/TActorBaseCTRP.h",
+          "cpp_path": "Source/forlearn/Private/TActorBaseCTRP.cpp",
+          "base_class": "None (Template class)",
+          "is_blueprintable": false,
+          "macros": [],
+          "description": "CRTP template base class for compile-time polymorphism",
+          "key_methods": [
+            "MakeChangeCTRP"
+          ]
+        },
+        {
+          "class_name": "AforlearnGameMode",
+          "header_path": "Source/forlearn/forlearnGameMode.h",
+          "cpp_path": "Source/forlearn/forlearnGameMode.cpp",
+          "base_class": "AGameModeBase",
+          "is_blueprintable": true,
+          "macros": ["UCLASS(minimalapi)"],
+          "description": "Main game mode defining game rules",
+          "key_methods": []
+        }
+      ]
+    }
+  ],
+  "class_dependencies": {
+    "AforlearnCharacter": {
+      "depends_on": [
+        "AGuns",
+        "USpringArmComponent",
+        "UCameraComponent",
+        "UInputMappingContext",
+        "UInputAction"
+      ],
+      "used_by": [
+        "AGuns"
+      ]
+    },
+    "AGuns": {
+      "depends_on": [
+        "UStaticMeshComponent",
+        "USphereComponent"
+      ],
+      "used_by": [
+        "AforlearnCharacter"
+      ]
+    },
+    "AActorBase": {
+      "depends_on": [
+        "UStaticMeshComponent",
+        "UBoxComponent",
+        "UTimelineComponent",
+        "UCurveFloat"
+      ],
+      "used_by": [
+        "AActorDerived",
+        "AActorDerivedOne"
+      ]
+    },
+    "AActorDerived": {
+      "depends_on": [
+        "AActorBase",
+        "TActorBaseCTRP"
+      ],
+      "used_by": []
+    },
+    "AActorDerivedOne": {
+      "depends_on": [
+        "AActorBase",
+        "TActorBaseCTRP"
+      ],
+      "used_by": []
+    }
+  },
+  "cross_class_method_calls": [
+    {
+      "from": "AforlearnCharacter",
+      "to": "AGuns",
+      "methods": [
+        "PickUpGun(AGuns*)",
+        "TransferAmmoToGun(AGuns*, int32)",
+        "Shoot() -> uses HeldGun pointer"
+      ]
+    },
+    {
+      "from": "AGuns",
+      "to": "AforlearnCharacter",
+      "methods": [
+        "OnOverlapBegin() -> calls character's PickUpGun()"
+      ]
+    },
+    {
+      "from": "TActorBaseCTRP<T>",
+      "to": "AActorDerived/AActorDerivedOne",
+      "methods": [
+        "MakeChangeCTRP() -> static_cast<T*>(this)->ChangeSize()"
+      ]
+    }
+  ],
+  "inheritance_hierarchy": {
+    "AActor": {
+      "children": [
+        {
+          "class": "AActorBase",
+          "children": [
+            {
+              "class": "AActorDerived",
+              "mixins": ["TActorBaseCTRP<AActorDerived>"]
+            },
+            {
+              "class": "AActorDerivedOne",
+              "mixins": ["TActorBaseCTRP<AActorDerivedOne>"]
+            }
+          ]
+        }
+      ]
+    },
+    "APawn": {
+      "children": [
+        {
+          "class": "AGuns",
+          "children": []
+        },
+        {
+          "class": "ACharacter",
+          "children": [
+            {
+              "class": "AforlearnCharacter",
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    "AGameModeBase": {
+      "children": [
+        {
+          "class": "AforlearnGameMode",
+          "children": []
+        }
+      ]
+    }
+  },
+  "content_structure": {
+    "blueprints": "Content/Blueprints/",
+    "characters": "Content/Characters/Mannequins/",
+    "level_prototyping": "Content/LevelPrototyping/",
+    "starter_content": "Content/StarterContent/",
+    "third_person": "Content/ThirdPerson/",
+    "assets": [
+      {
+        "name": "MyGuns.uasset",
+        "type": "Blueprint",
+        "based_on": "AGuns C++ class"
+      },
+      {
+        "name": "NewCurveBase.uasset",
+        "type": "Curve",
+        "used_by": "Timeline system"
+      }
+    ]
+  },
+  "config_files": {
+    "DefaultEngine.ini": "Config/DefaultEngine.ini",
+    "DefaultGame.ini": "Config/DefaultGame.ini",
+    "DefaultInput.ini": "Config/DefaultInput.ini",
+    "DefaultEditor.ini": "Config/DefaultEditor.ini"
+  },
+  "plugins": [
+    {
+      "name": "ModelingToolsEditorMode",
+      "enabled": true,
+      "target": "Editor"
+    }
+  ],
+  "analysis_notes": {
+    "skipped_paths": [
+      "Engine/",
+      "Plugins/ (default exclusion)"
+    ],
+    "total_classes_found": 7,
+    "engine_source_accessed": false,
+    "plugins_included": false,
+    "project_features": [
+      "Enhanced Input System",
+      "Third Person Character Controller",
+      "Weapon Pickup and Drop System",
+      "Aiming System with FOV Zoom",
+      "Multi-type Ammo Management",
+      "Delegate System (C++ and Blueprint)",
+      "Timeline Animation System",
+      "CRTP Design Pattern",
+      "Collision and Overlap Events"
+    ],
+    "recommendations": [
+      "Consider changing AGuns base class from APawn to AActor",
+      "Implement weapon system as UActorComponent for better reusability",
+      "Define IPickupable interface for unified pickup logic",
+      "Add damage system and health logic implementation",
+      "Implement UI system for ammo display and crosshair",
+      "Add weapon switching system for multiple weapon slots"
+    ]
+  }
+}
+  "cross_class_method_calls": [
+    {
+      "from": "AforlearnCharacter",
+      "to": "AGuns",
+      "methods": [
+        "PickUpGun(AGuns*)",
+        "TransferAmmoToGun(AGuns*, int32)",
+        "Shoot() -> uses HeldGun pointer"
+      ]
+    },
+    {
+      "from": "AGuns",
+      "to": "AforlearnCharacter",
+      "methods": [
+        "OnOverlapBegin() -> calls character's PickUpGun()"
+      ]
+    },
+    {
+      "from": "TActorBaseCTRP<T>",
+      "to": "AActorDerived/AActorDerivedOne",
+      "methods": [
+        "MakeChangeCTRP() -> static_cast<T*>(this)->ChangeSize()"
+      ]
+    }
+  ],

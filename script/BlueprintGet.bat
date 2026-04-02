@@ -1,5 +1,5 @@
 @echo off
 set PROJECT="H:\UE\forlearn\forlearn.uproject"
-set SCRIPT="H:\UE\forlearn\.claude\script\BlueprintStructureGet.py MyDefaultMap /Game/Characters/BP_Player.BP_Player"
+set SCRIPT="H:/UE/forlearn/.claude/script/FixAnimBPDirection.py /Game/Characters/Mannequins/Animations/ABP_Manny.ABP_Manny"
 
-UnrealEditor-Cmd.exe %PROJECT% -run=pythonscript -script=%SCRIPT%
+"D:\UE_5.5\Engine\Binaries\Win64\UnrealEditor-Cmd.exe" %PROJECT% -run=pythonscript -script=%SCRIPT%

@@ -13,7 +13,20 @@
       "Bash(\"D:/UE_5.5/Engine/Build/BatchFiles/Build.bat\" forlearn:*)",
       "Bash(\"C:/Program Files/Epic Games/UE_5.5/Engine/Build/BatchFiles/Build.bat\" forlearn Win64 Development -Project=\"H:/UE/forlearn/forlearn.uproject\" -WaitMutex)",
       "Bash(cmd.exe /c \"H:\\\\UE\\\\forlearn\\\\.claude\\\\script\\\\quickComplie.bat\")",
-      "Bash(\"H:/UE/forlearn/.claude/script/quickComplie.bat\" 2>&1)"
+      "Bash(\"H:/UE/forlearn/.claude/script/quickComplie.bat\" 2>&1)",
+      "Bash(\"H:\\\\UE\\\\UE_5.5\\\\Engine\\\\Binaries\\\\Win64\\\\UnrealEditor-Cmd.exe\" \"H:\\\\UE\\\\forlearn\\\\forlearn.uproject\" -run=pythonscript -script=\"H:\\\\UE\\\\forlearn\\\\.claude\\\\script\\\\BlueprintGenerate.py\" -stdout -unattended -nopause -nosplash 2>&1)",
+      "Bash(\"/d/UE_5.5/Engine/Binaries/Win64/UnrealEditor-Cmd.exe\" \"/h/UE/forlearn/forlearn.uproject\" -run=pythonscript -script=\"/h/UE/forlearn/.claude/script/BlueprintGenerate.py\" -stdout -unattended -nopause -nosplash 2>&1)",
+      "Bash(\"/d/UE_5.5/Engine/Binaries/Win64/UnrealEditor-Cmd.exe\" \"/h/UE/forlearn/forlearn.uproject\" -run=pythonscript -script=\"/h/UE/forlearn/.claude/script/BlueprintGenerate.py\" -stdout -unattended -nopause -nosplash)",
+      "Bash(\"/d/UE_5.5/Engine/Binaries/Win64/UnrealEditor-Cmd.exe\" \"/h/UE/forlearn/forlearn.uproject\" -run=pythonscript -script=\"/h/UE/forlearn/.claude/script/VerifyAssets.py\" -stdout -unattended -nopause -nosplash)",
+      "Bash(\"H:\\\\UE\\\\forlearn\\\\.claude\\\\script\\\\quickComplie.bat\" 2>&1)",
+      "Bash(cmd /c BlueprintGet.bat)",
+      "Bash(where UnrealEditor-Cmd.exe)",
+      "Read(//d/UE_5.5/Engine/Binaries/Win64/**)",
+      "Bash(\"H:\\\\UE\\\\UE_5.5\\\\Engine\\\\Binaries\\\\Win64\\\\UnrealEditor-Cmd.exe\" \"H:\\\\UE\\\\forlearn\\\\forlearn.uproject\" -run=pythonscript -script=\"H:\\\\UE\\\\forlearn\\\\.claude\\\\script\\\\BlueprintGenerate.py\")",
+      "Bash(cmd.exe /c 'dir \"H:\\\\UE\\\\forlearn\\\\.claude\\\\script\\\\BlueprintGenerate_output.log\"' 2>&1)",
+      "Bash(cmd.exe /c \"H:\\\\UE\\\\forlearn\\\\.claude\\\\script\\\\BlueprintGenerate.bat\" 2>&1)",
+      "Bash(./BlueprintGenerate.bat)",
+      "Bash(./BlueprintGet.bat)"
     ]
   }
 }

@@ -23,7 +23,7 @@ Modify existing Unreal Engine 5.5 C++ classes based on user requests. Only edit 
 
 - After modifying C++ files, invoke a user-specified build script at a given path to compile the changed code
 
-- Ensure the build script is called only after successful file writes and only if compilation is needed
+- Ensure the build script is called only after successful file writes
 
 Input Format
 
@@ -72,7 +72,7 @@ Output Format
 
 - Read minimal files, avoiding reading unrelated files
 
-- Never create new classes or files—only modify existing ones
+- Never create new classes or files --- only modify existing ones
 
 - If target_class_name is not found in the source tree, return status: "class_not_found" with a clear message
 
@@ -83,4 +83,4 @@ Preserve all existing macros, includes, and generated code sections
 
 - Do not hardcode build commands—delegate entirely to the provided script
 
-- only use '\\.claude\\script\\quickComplie.bat' to compile project !!!important!!!
+- MUST use '\\.claude\\script\\quickComplie.bat' to compile project

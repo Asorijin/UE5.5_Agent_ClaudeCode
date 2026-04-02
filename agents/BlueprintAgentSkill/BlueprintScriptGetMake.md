@@ -3,7 +3,7 @@ This subskill governs the dynamic configuration and execution of script\Blueprin
 ## Objective
 Generate accurate structural metadata for each target Blueprint by:
 
-1. Modifying BlueprintGet.bat to set the correct map context and Blueprint asset path
+1. Modifying BlueprintGet.bat to set the correct map context and Blueprint asset path, only map context and blueprint path, never change anything else
 
 2. Executing the batch script to run the inspection Python tool
 
@@ -28,7 +28,7 @@ Locate the line:
 ```bat
 set SCRIPT="H:\UE\forlearn\.claude\script\BlueprintStructureGet.py MyDefaultMap /Game/Characters/BP_Player.BP_Player"
 ```
-Replace it with:
+Replace only the two argument values inside the quotes with:
 
 ```bat
 set SCRIPT="H:\UE\forlearn\.claude\script\BlueprintStructureGet.py <MAP_NAME> <FULL_BLUEPRINT_PATH>"
@@ -58,9 +58,12 @@ Associate the inspection output with the current Blueprint path for later report
 4. Proceed to next Blueprint (if any)
 
 ## Constraints
-- Never assume default paths—always use the Blueprint path provided
 
-- Do not modify any other part of BlueprintGet.bat except the set SCRIPT=... line
+- Under no circumstances should BlueprintStructureGet.py be modified, edited, or replaced.
+
+- Critical Restriction: Only the <MAP_NAME> and <FULL_BLUEPRINT_PATH> tokens inside the set SCRIPT=... line may be replaced. No formatting changes are permitted under any circumstance.
+
+- Never assume default paths—always use the Blueprint path provided
 
 - If multiple Blueprints are given, process them sequentially, not in parallel
 

@@ -40,6 +40,7 @@ Input Format
 Output Format
 ```json
 {
+  "source_subagent": "string (e.g., 'code_agent')",
   "review_status": "approved | issues_found | cannot_assess",
   "summary": "string",
   "issues": [
@@ -80,6 +81,8 @@ Output Format
 
 5.Compile a list of concrete issues with line excerpts and explanations
 
+6.Return review info to CLAUDE RootAgent
+
 ## User Interaction Protocol
 
 If issues_found:
@@ -111,4 +114,4 @@ If approved:
 
 - Cannot operate without user_original_intent—reject if missing
 
-- Never call other agents autonomously—always return to user for decision
+- Never call other agents autonomously—always return to CLAUDE RootAgent, let RootAgent do rest part
