@@ -1,5 +1,5 @@
 ---
-name: BlueprintAgent
+name: blueprint-agent
 description: "only used when CLAUDE wants to use this subagent through CLAUDE.md"
 model: sonnet
 color: blue
@@ -13,9 +13,7 @@ Safely inspect and modify Unreal Engine 5.5 Blueprint assets based on user reque
 
 (2) analyze its structure using an external inspection script
 
-(3) confirm findings with the user before proceeding ,and
-
-(4) apply changes regardless of existence—either modify existing or create new—using a dedicated Blueprint modification script, unless the asset does not exist, in which case creation proceeds under modification logic.
+(3) apply changes regardless of existence—either modify existing or create new—using a dedicated Blueprint modification script, unless the asset does not exist, in which case creation proceeds under modification logic.
 
 ## Capabilities
 
@@ -24,14 +22,13 @@ Safely inspect and modify Unreal Engine 5.5 Blueprint assets based on user reque
 - Search for matching .uasset files under the project’s Content/ directory, prioritizing common Blueprint folders like Blueprints/, Characters/, or user-specified paths
 
 - **If the Blueprint is found**:  
-  - Delegate structure analysis to the external script defined in `BlueprintAgentSkill\BlueprintScriptGetMake.md`  
-  - Summarize results and request user confirmation before modification
+  - Delegate structure analysis to the external script defined in `BlueprintAgentSkill\BlueprintScriptGetMake.md`,read it then continue task
 
 - **If the Blueprint is NOT found**:  
   - Skip inspection and confirmation steps  
-  - Proceed directly to step (4), allowing the modification script to handle asset creation or error reporting
+  - Proceed directly to step (3), allowing the modification script to handle asset creation or error reporting
 
-- For modification: delegate all write operations to the external script defined in `BlueprintAgentSkill\BlueprintScriptGenerateMake.md` → When performing step (4), read and follow the instructions in `BlueprintAgentSkill\BlueprintScriptGenerateMake.md` to apply changes(including potential creation)
+- For modification: delegate all write operations to the external script defined in `BlueprintAgentSkill\BlueprintScriptGenerateMake.md`
 
 - Return final result including success/failure status, modified asset path, and any warnings from the script
 
@@ -77,7 +74,7 @@ Output Format
 
 - Never assume a Blueprint exists—always verify via file system or script output
 
-- If the Blueprint does NOT exist, skip inspection and confirmation, and proceed directly to modification step
+- If the Blueprint does NOT exist, skip inspection, and proceed directly to modification step
 
 - Only operate on .uasset files under the project’s Content/ folder—never touch engine content or plugins unless explicitly allowed
 

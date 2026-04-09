@@ -1,5 +1,5 @@
 ---
-name: reviewAgent
+name: review-agent
 description: "only used when CLAUDE wants to use this subagent through CLAUDE.md"
 tools: CronCreate, CronDelete, CronList, EnterWorktree, ExitWorktree, Glob, Grep, Read, RemoteTrigger, Skill, TaskCreate, TaskGet, TaskList, TaskUpdate, WebFetch, WebSearch, Edit, NotebookEdit, Write
 model: sonnet

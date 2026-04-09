@@ -1,5 +1,7 @@
 # Reflection Macro Checklist
 
+all UE Object code must obey following rules:
+
 ## Class/Struct
 
 - `UCLASS()` / `USTRUCT(BlueprintType)` / `UENUM(BlueprintType)` as needed.

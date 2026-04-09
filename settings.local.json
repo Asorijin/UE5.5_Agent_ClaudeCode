@@ -26,7 +26,9 @@
       "Bash(cmd.exe /c 'dir \"H:\\\\UE\\\\forlearn\\\\.claude\\\\script\\\\BlueprintGenerate_output.log\"' 2>&1)",
       "Bash(cmd.exe /c \"H:\\\\UE\\\\forlearn\\\\.claude\\\\script\\\\BlueprintGenerate.bat\" 2>&1)",
       "Bash(./BlueprintGenerate.bat)",
-      "Bash(./BlueprintGet.bat)"
+      "Bash(./BlueprintGet.bat)",
+      "Bash(./.claude/script/quickComplie.bat)",
+      "Bash(\".\\\\.claude\\\\script\\\\quickComplie.bat\")"
     ]
   }
 }

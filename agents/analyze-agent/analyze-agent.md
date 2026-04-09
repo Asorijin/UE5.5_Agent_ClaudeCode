@@ -1,5 +1,5 @@
 ---
-name: AnalyzeAgent
+name: analyze-agent
 description: "only used when CLAUDE determain use this subagent through CLAUDE.md"
 model: sonnet
 color: cyan

@@ -1,35 +1,33 @@
-This document defines the internal procedure that the BlueprintAgent must follow during Step 4 (Apply Changes) of its workflow. It is not a standalone agent—it is a detailed action plan executed within the BlueprintAgent’s own logic.
+This document defines the internal procedure that the BlueprintAgent must follow during Step 3 (Apply Changes) of its workflow. It is not a standalone agent—it is a detailed action plan executed within the BlueprintAgent’s own logic.
 
-Step 4.1: Analyze Operation Intent
+Step 3.1: Analyze Operation Intent
 
 Based on prior steps, determine which of the following applies:
 
 A. Modify existing Blueprint
-→ blueprint_info.found_in_content_dir == true
-→ Use inspection_summary to understand current structure
-→ Plan changes (e.g., “add float variable JumpPower”, “connect EventBeginPlay to PrintString”)
+- if found blueprint asset successfully
+- Use `blueprint-agent\blueprintOutput\{blueprintName}.json` to understand current structure
+- Plan changes (e.g., “add float variable JumpPower”, “connect EventBeginPlay to PrintString”)
 
 B. Create new Blueprint from C++ class
-→ blueprint_info.found_in_content_dir == false
-→ User intent must imply creation (e.g., “make BP based on AMyActor”)
-→ Extract C++ class name from user_intent (e.g., AMyActor, MyCharacter)
-→ Target path inferred from naming convention (e.g., /Game/Blueprints/BP_MyActor.BP_MyActor)
+- if can't find blueprint asset
+- User intent must imply creation (e.g., “make BP based on AMyActor”)
 
 > If case B is detected but no valid C++ class can be extracted, set status = "error" and halt.
 
-Step 4.2: Dynamically Generate script\BlueprintGenerate.py
+Step 3.2: Dynamically Generate script\BlueprintGenerate.py
 
-every time call this workflow, write(if really need write a new one) a new, self-contained Python script to script\BlueprintGenerate.py with the following properties:
+every time call this workflow, write(if really need write a new one) rewrite,  Python script `\blueprint-agent\BlueprintScripts\BlueprintGenerate.py` with the following properties:
 
 No external parameters: Since BlueprintGenerate.bat does not pass arguments, all data must be hard-coded into the .py file:
 
-TARGET_BP_PATH: Full asset path (e.g., /Game/Characters/BP_Player.BP_Player)
+- TARGET_BP_PATH: Full asset path (e.g., /Game/Characters/BP_Player.BP_Player)
 
-PARENT_CPP_CLASS_NAME: Only if creating (e.g., "MyCharacter")
+- PARENT_CPP_CLASS_NAME: Only if creating (e.g., "MyCharacter")
 
-MAP_CONTEXT: Typically "MyDefaultMap" (used to load editor world)
+- MAP_CONTEXT: Typically "MyDefaultMap" (used to load editor world)
 
-Specific change instructions (e.g., variable names, default values, node connections)
+- Specific change instructions (e.g., variable names, default values, node connections)
 
 Use only safe Unreal Editor Python API (unreal module):
 
@@ -79,11 +77,11 @@ unreal.BlueprintEditorLibrary.compile_blueprint(bp)
 unreal.log("BlueprintGenerate: Completed.")
 ```
 
-If additional functionality is needed or certain features are unnecessary, they can be added or removed according to actual requirements.
+If additional functionality is needed, they can be added or removed according to actual requirements.
 
 The generated script must be deterministic, side-effect aware, and safe to run.
 
-Step 4.3: Request Code Review from reviewAgent
+Step 3.3: Request Code Review from reviewAgent
 
 Before executing, pause the BlueprintAgent workflow and BlueprintAgent should send a structured request to the main CLAUDE process to invoke reviewAgent:
 
@@ -106,7 +104,7 @@ Do not proceed until the main system returns review_result: approved
 
 If review_result: rejected, return status: "error" with reviewer feedback
 
-Step 4.4: Execute & Report (No Extra Confirmation)
+Step 3.4: Execute & Report (No Extra Confirmation)
 
 Once review is approved:
 
@@ -114,10 +112,7 @@ Once review is approved:
 
 Script reviewed and approved. Executing blueprint operation automatically...
 
-2. Run:
-```cmd
-script\BlueprintGenerate.bat
-```
+2. Run the bat file : `\blueprint-agent\BlueprintScripts\BlueprintGenerate.bat`
 
 3. Capture output and exit code
 

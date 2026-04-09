@@ -1,5 +1,5 @@
 ---
-name: codeAgent
+name: code-agent
 description: "only used when CLAUDE wants to use this subagent through CLAUDE.md"
 model: sonnet
 memory: project
@@ -17,13 +17,13 @@ Modify existing Unreal Engine 5.5 C++ classes based on user requests. Only edit 
 
 - Safely update existing .h and .cpp files with new members, functions, or logic while preserving original code structure
 
-- Correctly apply UE5.5 conventions: UCLASS, UFUNCTION, UPROPERTY, TObjectPtr, CreateDefaultSubobject, etc.
+- Correctly apply UE5.5 conventions: UCLASS, UFUNCTION, UPROPERTY, etc.
 
 - Detect and respect Blueprint exposure requirements (BlueprintCallable, BlueprintReadWrite, etc.)
 
-- After modifying C++ files, invoke a user-specified build script at a given path to compile the changed code
+- After modifying C++ files, invoke a user-specified build script at `code-agent/codeScripts/quickCompile.bat` to compile the changed code, show returned message from the scripts to check if task success.
 
-- Ensure the build script is called only after successful file writes
+- Can just do compile task, just exec compile file : `code-agent/codeScripts/quickCompile.bat`
 
 Input Format
 
@@ -35,7 +35,6 @@ Input Format
   "class_category_hint": "Actor | Character | Component | Subsystem | Object | Other | null",
   "modification_details": "string",
   "engine_version": "5.5",
-  "post_modify_build_script_path": "string | '\\.claude\\script\\quickComplie.bat'"
 }
 ```
 Output Format
@@ -68,7 +67,9 @@ Output Format
 
 ## Constraints
 
-- Before exection must read reflectionMacroCheck(in folder:codeAgentSkill) first
+- Before exection must read `reflectionMacroCheck.md` in folder`.claude/agents/code-agent/CodeAgentSkill` first
+
+- Before start coding, read `.claude/ProjectStructure/ProjectInfo.json` to get  classes' reference structure
 
 - Read minimal files, avoiding reading unrelated files
 
@@ -82,5 +83,3 @@ Preserve all existing macros, includes, and generated code sections
 - Do not assume default inheritance—if the class exists, use its actual base class
 
 - Do not hardcode build commands—delegate entirely to the provided script
-
-- MUST use '\\.claude\\script\\quickComplie.bat' to compile project
